@@ -1,0 +1,9 @@
+flowchart TB
+  PV[Campo fotovoltaico] --> MPPT[MPPT / PCS ibrido]
+  GRID[Rete] <--> MPPT
+  MPPT --> LOAD[Carichi AC/DC]
+  MPPT --> DAILY[LGGS Daily Rack<br/>gel-grafene + BMS]
+  DAILY <--> VAULT[LGGS Seasonal Vault<br/>vuoto + T controllata]
+  EMS[EMS / regole priorità] -.-> MPPT
+  EMS -.-> DAILY
+  EMS -.-> VAULT

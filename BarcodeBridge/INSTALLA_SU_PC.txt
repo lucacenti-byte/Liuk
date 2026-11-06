@@ -1,0 +1,44 @@
+============================================================
+  BarcodeBridge — dove mettere i file sul tuo PC
+============================================================
+
+Questa cartella DEVE stare qui:
+
+  d:\Utility\CURSOR\BarcodeBridge
+
+Dentro deve esserci ad esempio:
+
+  d:\Utility\CURSOR\BarcodeBridge\avvia.bat
+  d:\Utility\CURSOR\BarcodeBridge\config.json
+  d:\Utility\CURSOR\BarcodeBridge\barcode_bridge\
+  d:\Utility\CURSOR\BarcodeBridge\scripts\
+
+------------------------------------------------------------
+COME COPIARLA ORA (scegli un metodo)
+------------------------------------------------------------
+
+1) ZIP dall'agente Cursor
+   - Scarica BarcodeBridge.zip dagli artifact della chat
+   - Estrai in d:\Utility\CURSOR\
+   - Ottieni d:\Utility\CURSOR\BarcodeBridge\...
+
+2) Da GitHub (branch della PR)
+   - Apri: https://github.com/lucacenti-byte/Liuk/tree/cursor/barcode-bridge-strip-be54/BarcodeBridge
+   - Code → Download ZIP del repo, poi copia la sottocartella
+     BarcodeBridge in d:\Utility\CURSOR\BarcodeBridge
+   - Oppure da PowerShell:
+
+     git clone https://github.com/lucacenti-byte/Liuk.git
+     xcopy /E /I Liuk\BarcodeBridge d:\Utility\CURSOR\BarcodeBridge
+
+------------------------------------------------------------
+PRIMO AVVIO SUL PC
+------------------------------------------------------------
+
+1. Apri d:\Utility\CURSOR\BarcodeBridge
+2. Doppio clic su:  scripts\installa_dipendenze.bat
+3. Doppio clic su:  avvia.bat
+
+(Serve Python 3.10+ installato, oppure dopo build_standalone.bat
+ non serve Python.)
+============================================================

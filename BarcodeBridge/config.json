@@ -1,0 +1,9 @@
+{
+  "max_key_interval_ms": 80,
+  "min_barcode_length": 5,
+  "strip_through_dash": true,
+  "require_dash": true,
+  "send_enter": true,
+  "log_passthrough": false,
+  "log_level": "INFO"
+}

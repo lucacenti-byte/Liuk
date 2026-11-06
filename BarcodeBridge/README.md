@@ -1,5 +1,8 @@
 # BarcodeBridge
 
+**Percorso sul PC:** `d:\Utility\CURSOR\BarcodeBridge`  
+(vedi anche `INSTALLA_SU_PC.txt` — i file non compaiono da soli su `D:`; vanno copiati/estratti lì)
+
 Software Windows **autonomo** che intercetta la lettura di un barcode (lettore a emulazione tastiera) e **rimuove il prefisso fino al primo `-`** prima che il testo arrivi al campo del sito web.
 
 ```text

@@ -4,5 +4,6 @@
   "strip_through_dash": true,
   "require_dash": true,
   "send_enter": true,
-  "log_passthrough": false
+  "log_passthrough": false,
+  "log_level": "INFO"
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Test unitari sulla logica di strip (senza hook tastiera)."""
 
-from barcode_bridge import strip_prefix
+from barcode_bridge.strip import strip_prefix
 
 
 def test_strip_typical_seven_plus_dash():

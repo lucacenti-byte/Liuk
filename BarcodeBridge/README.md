@@ -1,66 +1,98 @@
 # BarcodeBridge
 
-Programma Python per Windows che intercetta la lettura di un barcode (lettore a emulazione tastiera) e **rimuove il prefisso fino al primo carattere `-`** prima che il testo arrivi al campo del sito web.
-
-Esempio:
+Software Windows **autonomo** che intercetta la lettura di un barcode (lettore a emulazione tastiera) e **rimuove il prefisso fino al primo `-`** prima che il testo arrivi al campo del sito web.
 
 ```text
 ABC1234-9876543210  →  9876543210
 ```
 
-I primi caratteri (tipicamente 7) e il `-` non vengono più digitati: sul sito compare solo la parte utile.
+Può girare in due modi (scegli dopo, entrambi sono già pronti):
 
-## Requisiti
+| Modalità | Quando usarla | Come |
+|----------|---------------|------|
+| **Batch / GUI / console** | Avvio manuale o all’accesso utente | `avvia.bat`, `scripts\avvia_console.bat`, `scripts\installa_avvio_utente.bat` |
+| **Servizio Windows** | Avvio con il sistema | `scripts\installa_servizio.bat` |
 
-- Windows
-- Python 3.10+
-- Lettore barcode in modalità **tastiera (HID / keyboard wedge)**
+> L’hook tastiera funziona nella **sessione desktop dell’utente**. Per uso quotidiano è più affidabile l’**avvio automatico utente** (attività Pianificata) rispetto a un servizio LocalSystem.
 
-## Installazione
+## Distribuzione sui PC
 
-Copia questa cartella in `d:\Utility\CURSOR\BarcodeBridge` (o dovunque preferisci), poi:
+Due strade:
 
-```bat
-cd /d d:\Utility\CURSOR\BarcodeBridge
-py -3 -m pip install -r requirements.txt
-```
+### A) Pacchetto standalone (nessun Python sul PC destinazione)
 
-## Avvio
-
-Doppio clic su `avvia.bat`, oppure:
+Su un PC di build con Python:
 
 ```bat
-py -3 barcode_bridge.py
+scripts\build_standalone.bat
 ```
 
-Se l’intercettazione non funziona, avvia **come amministratore** (clic destro → Esegui come amministratore).
+Copia l’intera cartella `dist\BarcodeBridge\` su ogni PC (es. `d:\Utility\CURSOR\BarcodeBridge`).
 
-1. Lascia aperta la finestra BarcodeBridge  
-2. Metti il cursore sul campo del sito web  
-3. Scansiona il barcode  
+### B) Cartella con ambiente virtuale locale
 
-Nel log vedrai `originale → trasformato`.
-
-## Test senza scanner
-
-Nella GUI usa il campo **Test manuale**, oppure da console:
+Su ogni PC con Python 3.10+:
 
 ```bat
-py -3 barcode_bridge.py --demo ABC1234-9876543210
+scripts\installa_dipendenze.bat
 ```
+
+Crea `.venv` con tutte le dipendenze: la cartella diventa autosufficiente.
+
+## Avvio batch
+
+- `avvia.bat` — interfaccia grafica  
+- `scripts\avvia_console.bat` — solo console (adatto a servizio / task)  
+- Test senza scanner:  
+  `BarcodeBridge.exe --demo ABC1234-9876543210`  
+  oppure `py -3 -m barcode_bridge --demo ABC1234-9876543210`
+
+## Avvio automatico / servizio
+
+**Consigliato (sessione utente):**
+
+```bat
+scripts\installa_avvio_utente.bat
+```
+
+**Servizio Windows** (Amministratore):
+
+```bat
+scripts\installa_servizio.bat
+scripts\avvia_servizio.bat
+scripts\ferma_servizio.bat
+scripts\rimuovi_servizio.bat
+```
+
+Log: `logs\barcode_bridge.log`
 
 ## Configurazione (`config.json`)
 
 | Chiave | Significato | Default |
 |--------|-------------|---------|
 | `strip_through_dash` | Taglia tutto fino a `-` (incluso) | `true` |
-| `require_dash` | Se non c’è `-`, lascia passare la lettura invariata | `true` |
-| `send_enter` | Dopo il codice reinietta anche Invio | `true` |
-| `max_key_interval_ms` | Intervallo massimo tra tasti per riconoscerli come barcode | `80` |
-| `min_barcode_length` | Lunghezza minima per trattare la sequenza come barcode | `5` |
+| `require_dash` | Senza `-` lascia passare invariato | `true` |
+| `send_enter` | Dopo il codice reinietta Invio | `true` |
+| `max_key_interval_ms` | Intervallo max tra tasti (barcode) | `80` |
+| `min_barcode_length` | Lunghezza minima sequenza | `5` |
+| `log_level` | Livello log file | `INFO` |
 
-## Note
+## Struttura
 
-- La digitazione normale (lenta) non viene alterata: solo sequenze rapide tipiche dello scanner.
-- Il programma deve restare in esecuzione mentre usi il sito.
-- Non modifica il lettore: filtra solo ciò che arriva alla tastiera virtuale.
+```text
+BarcodeBridge/
+  avvia.bat
+  config.json
+  requirements.txt
+  run_barcode_bridge.py
+  barcode_bridge/          ← codice Python
+  scripts/                 ← installazione, servizio, build
+  logs/                    ← creato a runtime
+```
+
+## Requisiti tecnici
+
+- Windows 10/11  
+- Lettore barcode in modalità **tastiera (HID)**  
+- Per build standalone o sviluppo: Python 3.10+  
+- Eventualmente “Esegui come amministratore” se l’hook non intercetta
